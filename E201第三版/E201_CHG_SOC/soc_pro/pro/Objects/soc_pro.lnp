@@ -1,0 +1,13 @@
+".\Objects\STARTUP.obj",
+".\Objects\bsp_pwm.obj",
+".\Objects\bsp_uart.obj",
+".\Objects\bsp_timer.obj",
+".\Objects\TimeOut.obj",
+".\Objects\bsp_i2c_s.obj",
+".\Objects\bsp_i2c_port.obj",
+".\Objects\main.obj",
+".\Objects\app.obj",
+".\Objects\S_TouchKeyCFG.obj",
+"..\lib\SC93F8XXX_HighSensitive_Lib_T1_V0.0.2.LIB" 
+TO ".\Objects\soc_pro" 
+PRINT(".\Listings\soc_pro.m51") RAMSIZE(256) 

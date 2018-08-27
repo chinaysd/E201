@@ -1,0 +1,52 @@
+C51 COMPILER V9.59.0.0   BSP_TIMER                                                         08/24/2018 11:55:31 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE BSP_TIMER
+OBJECT MODULE PLACED IN .\Objects\bsp_timer.obj
+COMPILER INVOKED BY: D:\keil4\C51\BIN\C51.EXE ..\bsp\bsp_timer.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\app;..\bsp;..\lib;..
+                    -\lib\inc) DEBUG OBJECTEXTEND PRINT(.\Listings\bsp_timer.lst) TABS(2) OBJECT(.\Objects\bsp_timer.obj)
+
+line level    source
+
+   1          #include "bsp_timer.h"
+   2          
+   3          /*****************************************************************************
+   4           * Function   : bsp_Timer0Init
+   5           * Description   : tim0设置为1ms中断
+   6           * Input           : void  
+   7           * Output     : None
+   8           * Return     : 
+   9           * Others     : 
+  10           * Record
+  11           * 1.Date     : 20180414
+  12           *   Author       : marco
+  13           *   Modification: Created function
+  14          
+  15          *****************************************************************************/
+  16          void Bsp_Timer0Init(void){ 
+  17   1        TMCON = 0x00;   
+  18   1        TMOD = 0x11;    
+  19   1        TL0 = (65536 - 1000)%256;    
+  20   1        TH0 = (65536 - 1000)/256;
+  21   1        TR0 = 0;
+  22   1        ET0 = 1;//定时器0允许
+  23   1        TR0 = 1;//打开定时器0
+  24   1      }
+  25          
+  26          
+  27          
+  28          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     19    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

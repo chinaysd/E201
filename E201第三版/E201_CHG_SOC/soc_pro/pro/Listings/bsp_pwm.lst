@@ -1,0 +1,84 @@
+C51 COMPILER V9.59.0.0   BSP_PWM                                                           08/24/2018 10:21:58 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE BSP_PWM
+OBJECT MODULE PLACED IN .\Objects\bsp_pwm.obj
+COMPILER INVOKED BY: D:\keil4\C51\BIN\C51.EXE ..\bsp\bsp_pwm.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\app;..\bsp;..\lib;..\l
+                    -ib\inc) DEBUG OBJECTEXTEND PRINT(.\Listings\bsp_pwm.lst) TABS(2) OBJECT(.\Objects\bsp_pwm.obj)
+
+line level    source
+
+   1          #include "bsp_pwm.h"
+   2          #include "data_type.h"
+   3          #include <string.h>
+   4          
+   5          static Pwm_Para_t Pwm_Para;
+   6          
+   7          void Bsp_PWMInit(void){
+   8   1        PWMCON = 0x13;      
+   9   1        PWMPRD  = 100;      
+  10   1        PWMCFG  = 0x12;     
+  11   1        PWMDTY1 = 0xbf;         
+  12   1        PWMDTYA = 0x00;
+  13   1        IE1|=0X02;
+  14   1      }
+  15          
+  16          void Bsp_PwmHandle() interrupt 8{
+  17   1        PWMCON &=~0X40;         
+  18   1        if(Pwm_Para.cnt ++ >Pwm_Para.base_cnt){
+  19   2          Pwm_Para.cnt = 0;
+  20   2          
+  21   2          if(PWMDTY1 == 0){
+  22   3            Pwm_Para.down_flag = True;
+  23   3            Pwm_Para.up_flag = False;
+  24   3            Pwm_Para.base_cnt = 300;
+  25   3          }
+  26   2      
+  27   2          if(PWMDTY1 == 0xbf){
+  28   3            Pwm_Para.down_flag = False;
+  29   3            Pwm_Para.up_flag = True;
+  30   3            Pwm_Para.base_cnt = 150;
+  31   3          }
+  32   2          
+  33   2          if(Pwm_Para.down_flag)      
+  34   2            PWMDTY1 ++;
+  35   2          if(Pwm_Para.up_flag)      
+  36   2            PWMDTY1 --;
+  37   2        }
+  38   1      }
+  39          
+  40          void Bsp_PwmOff(void){
+  41   1        memset((void*)&Pwm_Para,0,sizeof(Pwm_Para_t));
+  42   1        PWMCON &= ~0x80;
+  43   1        PWMPRD = 0;
+  44   1        PWMDTY1 = 0;
+  45   1      }
+  46          
+  47          void Bsp_PwnFullOn(void){
+  48   1        memset((void*)&Pwm_Para,0,sizeof(Pwm_Para_t));
+  49   1        PWMCON &= ~0x80;
+  50   1        PWMPRD = 0;
+  51   1        PWMDTY1 = 0xff;
+  52   1      }
+  53          
+  54          void Bsp_PwmON(void){
+C51 COMPILER V9.59.0.0   BSP_PWM                                                           08/24/2018 10:21:58 PAGE 2   
+
+  55   1        Bsp_PWMInit();
+  56   1        PWMCON |= 0x80;
+  57   1      }
+  58          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    168    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,1 @@
+"..\bsp\commu.c" OPTIMIZE (8,SPEED) BROWSE INCDIR(..\app;..\bsp;..\lib;..\lib\inc) DEBUG OBJECTEXTEND PRINT(.\Listings\commu.lst) TABS (2) OBJECT(.\Objects\commu.obj)

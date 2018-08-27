@@ -1,0 +1,13 @@
+---- FootLedSta Matches (12 in 2 files) ----
+App.c (app):		if(App_Para.FootLedSta){
+App.c (app):		if(App_Para.FootLedSta){
+App.c (app):			App_Para.FootLedSta = FOOT_LED_OFF;
+App.c (app):		if(App_Para.FootLedSta == FOOT_LED_OFF){
+App.c (app):			App_Para.FootLedSta = FOOT_LED_ON;
+App.c (app):			App_Para.FootLedSta = FOOT_LED_OFF;
+App.c (app):		if(App_Para.FootLedSta == FOOT_LED_ON){
+App.c (app):		}else if(App_Para.FootLedSta == FOOT_LED_OFF){
+App.c (app):		if(App_Para.FootLedSta){
+App.c (app):		if(App_Para.FootLedSta){
+App.c (app):		App_Para.FootLedSta = FOOT_LED_OFF;
+App.h (app):	unsigned char FootLedSta;

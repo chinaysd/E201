@@ -1,0 +1,116 @@
+C51 COMPILER V9.59.0.0   BSP_UART                                                          08/24/2018 11:55:31 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE BSP_UART
+OBJECT MODULE PLACED IN .\Objects\bsp_uart.obj
+COMPILER INVOKED BY: D:\keil4\C51\BIN\C51.EXE ..\bsp\bsp_uart.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\app;..\bsp;..\lib;..\
+                    -lib\inc) DEBUG OBJECTEXTEND PRINT(.\Listings\bsp_uart.lst) TABS(2) OBJECT(.\Objects\bsp_uart.obj)
+
+line level    source
+
+   1          #include "bsp_uart.h"
+   2          #include "sys_config.h"
+   3          #include "data_type.h"
+   4          
+   5          #include <string.h>
+   6          
+   7          Bsp_Tx_t Tx_Buf;
+   8          
+   9          /*****************************************************************************
+  10           * Function   : Bsp_UartInit1
+  11           * Description   : 串口初始化
+  12           * Input           : void  
+  13           * Output     : None
+  14           * Return     : 
+  15           * Others     : 
+  16           * Record
+  17           * 1.Date     : 20180403
+  18           *   Author       : marco
+  19           *   Modification: Created function
+  20          
+  21          *****************************************************************************/
+  22          int Bsp_UartInit(unsigned char id){
+  23   1      #if 0
+                if(id == BSP_UART0_ID){
+                  SCON=0x50;
+                  PCON|=0x80;
+                  T2CON&=~0x30;
+                  TMCON|=0x02;
+                  TMOD&=0x0f;
+                  TMOD|=0x20;
+                  TH1=256 - SYS_FRE_SET/BSP_BAURATE/16/2*2;
+                  TR1=0;
+                  TR1=1;
+                  EUART=0;
+                  return 0;
+                }else 
+                #endif
+  38   1        if(id == BSP_UART1_ID){
+  39   2          unsigned int baud_set = 0;
+  40   2          OTCON = 0XC0;
+  41   2          SSCON0 = 0X50;
+  42   2          baud_set = (unsigned int)(SYS_FRE_SET/16/BSP_BAURATE);
+  43   2          SSCON1 = baud_set%256;
+  44   2          SSCON2 = baud_set/256;
+  45   2          IE1 = 0x01;      //开启SSI中断
+  46   2          P2CON |= 0X01;  // 必须设置IO口，否则则为输入状态
+  47   2          P20 = 1;
+  48   2          return 0;
+  49   2        } 
+  50   1        return -1;
+  51   1      }
+  52          
+  53          /*****************************************************************************
+  54           * Function   : Bsp_UartSendBuf
+C51 COMPILER V9.59.0.0   BSP_UART                                                          08/24/2018 11:55:31 PAGE 2   
+
+  55           * Description   : 串口发送数据
+  56           * Input           : unsigned char id    
+  57                    unsigned char *buf  
+  58                    unsigned int len    
+  59           * Output     : None
+  60           * Return     : 
+  61           * Others     : 
+  62           * Record
+  63           * 1.Date     : 20180409
+  64           *   Author       : marco
+  65           *   Modification: Created function
+  66          
+  67          *****************************************************************************/
+  68          void Bsp_UartSendBuf(unsigned char id,unsigned char *buf,unsigned int len){
+  69   1        if(id == BSP_UART0_ID){
+  70   2          while(len --){
+  71   3            TI = 0;
+  72   3            SBUF = *buf++;
+  73   3            while(!TI);
+  74   3          }
+  75   2        }else if(id == BSP_UART1_ID){
+  76   2          if(!Tx_Buf.flag){
+  77   3            if(len > BSP_UART1_SIZE)
+  78   3              return ;
+  79   3            memset((void*)&Tx_Buf,0,sizeof(Bsp_Tx_t));
+  80   3            memcpy(Tx_Buf.buf,buf,len);
+  81   3            Tx_Buf.len = len;
+  82   3            Tx_Buf.flag = True;
+  83   3            /*<开启传输>*/
+  84   3            SSDAT = Tx_Buf.buf[0];
+  85   3          }
+  86   2        }
+  87   1      }
+  88          
+  89          
+  90          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    161    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

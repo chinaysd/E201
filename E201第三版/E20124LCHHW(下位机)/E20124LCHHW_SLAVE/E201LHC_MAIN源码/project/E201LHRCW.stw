@@ -1,0 +1,12 @@
+;	STMicroelectronics Workspace file
+
+[Version]
+Keyword=ST7Workspace-V0.7
+
+[Project0]
+Filename=e201lhrcw.stp
+Dependencies=
+[Options]
+ActiveProject=e201lhrcw
+ActiveConfig=Debug
+AddSortedElements=0
